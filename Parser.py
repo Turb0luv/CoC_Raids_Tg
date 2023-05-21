@@ -33,3 +33,26 @@ def GetCurrentMembers():
         tags.append(member['tag'])
 
     return tags
+
+def GetCurrentWar():
+    usersData = []
+
+    War = clashAPI.getClashInfo('getCurrentWar')
+    Members = War["clan"]["members"]
+
+    parsed_dates = pd.to_datetime(War["startTime"]).date()
+    startTime = parsed_dates.strftime('%d-%m-20%y')
+
+    for member in Members:
+        stars = 0
+
+        try:
+            for attack in member["attacks"]:
+                stars += attack["stars"]
+
+        except:
+            stars = "-"
+
+        usersData.append([member['name'], member['tag'], stars])
+
+    return [startTime, usersData]

@@ -4,8 +4,9 @@ API="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmE
 clanTag = "%232QCRVUC99"
 RAIDS = f"https://api.clashofclans.com/v1/clans/{clanTag}/capitalraidseasons?limit=1"
 MEMBERS = f"https://api.clashofclans.com/v1/clans/{clanTag}/members"
+CW = f"https://api.clashofclans.com/v1/clans/{clanTag}/currentwar"
 
-cases = [['getRaidsData', RAIDS], ['getClanMembers', MEMBERS]]
+cases = [['getRaidsData', RAIDS], ['getClanMembers', MEMBERS], ['getCurrentWar', CW]]
 
 def getClashInfo(type):
     URL = ''

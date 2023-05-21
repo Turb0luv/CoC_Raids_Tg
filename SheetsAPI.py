@@ -1,5 +1,11 @@
+import gspread
 import Parser
 import time
+
+gc = gspread.service_account(filename='googleKeys.json')
+sh = gc.open_by_url('https://docs.google.com/spreadsheets/d/1WXli0D45kkwCV1fq2zB3WSkuzT0XPiMrhYDrk-zypQA/')
+sh1 = sh.get_worksheet(0)
+sh2 = sh.get_worksheet(1)
 
 def checkPlayers(sh):
     currentMembers = Parser.GetCurrentMembers()
@@ -31,7 +37,7 @@ def setPlayerNames(sh, data):
     playersTags = sh.col_values(2)
 
     i = 1
-    for member in data[1]:
+    for member in data:
         if member[1] not in playersTags:
             print(member[1])
             time.sleep(2)
@@ -40,10 +46,8 @@ def setPlayerNames(sh, data):
             sh.update('A' + str(len(playersTags) + i), member[0])
             i = i + 1
 
-def setRaidResults(sh):
-    data = Parser.GetRaidsInfo()
-
-    setPlayerNames(sh, data)
+def setResults(sh, data):
+    setPlayerNames(sh, data[1])
     startTimeRaids = sh.row_values(1)
 
     column = len(startTimeRaids) + 1
@@ -58,4 +62,12 @@ def setRaidResults(sh):
         result = sh.find(member[1])
         sh.update_cell(result.row, column, member[2])
 
+    checkPlayers(sh)
 
+def setRaidResults():
+    data = Parser.GetRaidsInfo()
+    setResults(sh1, data)
+
+def setWarResults():
+    data = Parser.GetCurrentWar()
+    setResults(sh2, data)
